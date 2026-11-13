@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="简洁的 JSON、XML 格式化与 Unix 时间戳转换工具。所有数据在浏览器本地处理。">
+  <meta name="theme-color" content="#f5f7fb">
+  <title>JSON 格式化 · wkk.tools</title>
+  <link rel="icon" href="./favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="./style.css">
+  <script type="module" src="./app.js"></script>
+</head>
+<body>
+  <a class="skip-link" href="#workspace">跳到工作区</a>
+  <header class="header">
+    <div class="header-inner">
+      <a class="brand" href="#json" aria-label="wkk.tools 首页"><span class="brand-mark">w</span><span>wkk.tools</span></a>
+      <nav class="navigation" aria-label="工具导航">
+        <a href="#json" class="nav-item" aria-current="page"><span class="json-icon" aria-hidden="true">{ }</span>JSON 格式化</a>
+        <a href="#time" class="nav-item"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 5v7h6"/></svg>时间戳转换</a>
+        <a href="#xml" class="nav-item"><span class="json-icon" aria-hidden="true">&lt;/&gt;</span>XML 格式化</a>
+      </nav>
+      <div class="header-meta"><span class="local-badge"><i></i>本地处理</span><span class="appearance"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 1v3m0 16v3M1 12h3m16 0h3M4 4l2 2m12 12 2 2M4 20l2-2M18 6l2-2"/></svg>浅色外观</span></div>
+    </div>
+  </header>
+  <main id="workspace" tabindex="-1">
+    <section id="json-panel" aria-label="JSON 格式化">
+      <form id="json-form" novalidate>
+        <label class="sr-only" for="json-input">JSON 内容</label>
+        <div class="json-editor">
+          <div class="line-gutter" aria-hidden="true"><pre id="json-line-numbers">1</pre></div>
+          <textarea id="json-input" wrap="off" spellcheck="false" autocapitalize="off" autocomplete="off" aria-describedby="json-status" placeholder="在这里粘贴 JSON…"></textarea>
+        </div>
+        <div class="json-actions"><button class="primary" type="submit">格式化</button><p id="json-status" class="status" role="status"></p></div>
+      </form>
+    </section>
+    <section id="xml-panel" hidden aria-label="XML 格式化">
+      <form id="xml-form" novalidate>
+        <label class="sr-only" for="xml-input">XML 内容</label>
+        <div class="json-editor">
+          <div class="line-gutter" aria-hidden="true"><pre id="xml-line-numbers">1</pre></div>
+          <textarea id="xml-input" wrap="off" spellcheck="false" autocapitalize="off" autocomplete="off" aria-describedby="xml-status" placeholder="在这里粘贴 XML…"></textarea>
+        </div>
+        <div class="json-actions"><button class="primary" type="submit">格式化</button><p id="xml-status" class="status" role="status"></p></div>
+      </form>
+    </section>
+    <section id="time-panel" aria-label="时间戳转换" hidden>
+      <section class="clock-card" aria-labelledby="clock-heading">
+        <div class="clock-main"><div class="clock-heading"><h1 id="clock-heading">实时时间</h1><span class="live-badge"><i></i>实时更新</span></div><div class="clock-date"><time id="live-date">—</time><span id="live-weekday"></span></div><p id="system-zone" class="zone">读取系统时区…</p></div>
+        <div class="clock-unix"><span>Unix 时间戳（秒）</span><span id="live-unix">—</span></div>
+      </section>
+      <form id="unix-form" class="convert-card" novalidate>
+        <h2>Unix 时间戳转字符串</h2>
+                <div class="conversion-inputs">
+          <div class="field"><label for="unix-input">时间戳</label><input id="unix-input" type="text" inputmode="numeric" spellcheck="false" autocomplete="off" aria-describedby="unix-status unix-unit" placeholder="输入秒或毫秒时间戳"></div>
+          <div class="field"><select id="unix-unit" class="meta-value unit-select" aria-label="时间戳单位"><option value="s">秒(s)</option><option value="ms">毫秒(ms)</option></select></div>
+          <div class="field"><span class="field-label">时区 · 跟随系统</span><div class="meta-value system-zone-value"></div></div>
+        </div>
+        <div class="conversion-results">
+          <div class="field"><label for="date-output">结果</label><div class="result-wrap"><input id="date-output" class="result" readonly placeholder="转换后的日期时间" aria-label="日期时间字符串结果"><button class="copy-button" type="button" data-copy-target="date-output" data-status="unix-status" aria-label="复制日期时间结果" title="复制结果" disabled><svg class="copy-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="8" y="8" width="12" height="13" rx="2"/><path d="M16 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h3"/></svg><svg class="check-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg></button></div></div>
+          <button class="primary" type="submit">转换</button>
+        </div>
+        <p id="unix-status" class="status" role="status"></p>
+      </form>
+      <form id="date-form" class="convert-card" novalidate>
+        <h2>字符串转 Unix 时间戳</h2>
+                <div class="conversion-inputs">
+          <div class="field"><label for="date-input">日期时间</label><input id="date-input" type="text" spellcheck="false" autocomplete="off" placeholder="YYYY-MM-DD HH:mm:ss.SSS（毫秒可省略）" aria-describedby="date-status"></div>
+          <div class="field"><span class="field-label">输出单位</span><div id="date-output-unit" class="meta-value">秒(s)</div></div>
+          <div class="field"><span class="field-label">时区 · 跟随系统</span><div class="meta-value system-zone-value"></div></div>
+        </div>
+        <div class="conversion-results">
+          <div class="field"><label for="unix-output">结果</label><div class="result-wrap"><input id="unix-output" class="result" readonly placeholder="转换后的 Unix 时间戳" aria-label="Unix 时间戳结果（秒）"><button class="copy-button" type="button" data-copy-target="unix-output" data-status="date-status" aria-label="复制 Unix 时间戳结果" title="复制结果" disabled><svg class="copy-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="8" y="8" width="12" height="13" rx="2"/><path d="M16 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h3"/></svg><svg class="check-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg></button></div></div>
+          <button class="primary" type="submit">转换</button>
+        </div>
+        <p id="date-status" class="status" role="status"></p>
+      </form>
+      <p class="timezone-note">日期时间按系统时区解析和显示。</p>
+    </section>
+    <noscript><p>请启用 JavaScript 以使用本地格式化与转换功能。</p></noscript>
+  </main>
+  <footer><span>wkk.tools / <span id="footer-tool">JSON 格式化</span></span><span>少一点繁琐，多一点专注。</span></footer>
+</body>
+</html>
+
+
+
+
+
