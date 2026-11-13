@@ -19,7 +19,6 @@ function navigate() {
   });
   const title = { json: 'JSON 格式化', xml: 'XML 格式化', time: '时间戳转换' }[page];
   document.title = `${title} · wkk.tools`;
-  $('footer-tool').textContent = title;
 }
 window.addEventListener('hashchange', navigate);
 navigate();
@@ -181,5 +180,3 @@ updateUnixUnit();
 tick();
 setInterval(tick, 1000);
 document.addEventListener('visibilitychange', () => { if (!document.hidden) tick(); });
-
-
